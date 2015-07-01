@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Nucleus Tests</title>
+  <link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css">
+  <script src="../bower_components/document-register-element/build/document-register-element.js"></script>
+  <script src="../bower_components/bind-polyfill/index.js"></script>
+  <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="../bower_components/qunit/qunit/qunit.js"></script>
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture">
+
+    <script>
+      window.onload = function() {
+
+        Nucleus.Component('countdown-timer', {
+          timer: null,
+
+          remaining: 10000,
+          interval: 1000,
+          
+          events: {
+            'click .toggle': 'toggle'
+          },
+          
+          created: function() {
+            this.$button = this.$('button');
+            this.$countdown = this.$('.countdown');
+            this.start();
+          },
+
+          toggle: function() {
+            this.timer ? this.stop() : this.start();
+          },
+
+          stop: function() {
+            clearInterval(this.timer);
+            this.timer = null;
+            this.$button.html("Start");
+          },
+
+          start: function() {
+            this.timer = setInterval(function() {
+              this.$countdown.html(this.remaining--);
+            }.bind(this), this.interval);
+            this.$button.html("Pause");
+          },
+
+          remainingChanged: function() {
+            console.log("woo");
+          }
+        });
+
+        Nucleus.Component('x-button', {
+          extends: 'button',
+          events: {
+            'click': 'somefunc'
+          },
+          created: function() {
+            console.log("created");
+          }
+        });
+
+      }
+    </script>
+
+    <countdown-timer remaining="1000" interval="100">
+      <span class="countdown"></span>
+      <button class="toggle"></button>
+    </countdown-timer>
+
+    <button is="x-button">blah</button>
+
+  </div>
+
+  <script src="../dist/nucleus.js"></script>
+  <script src="nucleus_test.js"></script>
+</body>
+</html>
