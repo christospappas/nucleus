@@ -28,6 +28,7 @@ var Base = {
 	},
 
 	attributeChangedCallback: function(attrName, oldVal, newVal) {
+		var attrName = _.camelCase(attrName);
 		this._setAttributeToProperty(attrName);
 		this._invokeMethod(`${attrName}Changed`, [oldVal, newVal]);
 		this._invokeMethod('attributeChanged', arguments);

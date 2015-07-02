@@ -24,7 +24,9 @@
             interval: {
               type: Number, 
               default: 1000
-            }
+            },
+
+            randomStuff: Object
 
           },
           
@@ -33,7 +35,7 @@
           },
           
           created: function() {
-            this.$button = this.$('button');
+            this.$button = this.$('.toggle');
             this.$countdown = this.$('.countdown');
             this.start();
           },
@@ -57,28 +59,37 @@
 
           remainingChanged: function(oldVal, newVal) {
             console.log("woo! changed to: " + newVal);
+          },
+
+          randomStuffChanged: function(oldVal, newVal) {
+            console.log(this.randomStuff);
           }
         });
 
         Nucleus.Component('x-button', {
           extends: 'button',
           events: {
-            'click': 'somefunc'
+            'click': 'handleClick'
           },
-          somefunc: function() {
-            alert("here!");
+          handleClick: function() {
+            alert(this.$el.text());
           }
         });
 
       }
     </script>
 
-    <countdown-timer remaining="1000" interval="100">
-      <span class="countdown"></span>
+    <countdown-timer remaining="1000" interval="200">
+      <h1 class="countdown"></h1>
       <button class="toggle"></button>
     </countdown-timer>
+    <br>
+    <countdown-timer remaining="1000" interval="100" random-stuff='{"data": "goes here", "nested": {"works": "as well"}}'>
+      <h1 class="countdown"></h1>
+      <button class="toggle"></button>
+      <button is="x-button">G'day Mate!</button>
+    </countdown-timer>
 
-    <button is="x-button">blah</button>
 
   <script src="../bower_components/document-register-element/build/document-register-element.js"></script>
   <script src="../bower_components/jquery/dist/jquery.min.js"></script>

@@ -10,12 +10,12 @@ export default {
 
 	_setAttributeToProperty: function(attrName) {
 		var definition = this._propertyDefinition(attrName);
-		
+
 		if (definition !== undefined) {
-			var value = this.getAttribute(attrName) || definition.default,
+			var value = this.getAttribute(_.kebabCase(attrName)) || definition.default,
 					type = definition.type || String;
-			
-			this[attrName] = this._deserialize(value , type);
+
+			this[attrName] = this._deserialize(value, type);
 		}
 	},
 
