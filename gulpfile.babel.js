@@ -1,27 +1,46 @@
-import gulp from 'gulp';
-import del from 'del';
-import gulpLoadPlugins from 'gulp-load-plugins';
-import pkg from './package.json';
-import qunit from 'node-qunit-phantomjs'
-const $ = gulpLoadPlugins();
+var gulp = require('gulp');
+var sourcemaps = require('gulp-sourcemaps');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var browserify = require('browserify');
+var watchify = require('watchify');
+var babel = require('babelify');
+var qunit = require('node-qunit-phantomjs');
+ 
+function compile(watch) {
+  var bundler = watchify(browserify('./src/index.js', { debug: true }).transform(babel));
+ 
+  function rebundle() {
+    bundler.bundle()
+      .on('error', function(err) { console.error(err); this.emit('end'); })
+      .pipe(source('build.js'))
+      .pipe(buffer())
+      .pipe(sourcemaps.init({ loadMaps: true }))
+      .pipe(sourcemaps.write('./'))
+      .pipe(gulp.dest('./build'));
+  }
+ 
+  if (watch) {
+    bundler.on('update', function() {
+      console.log('-> bundling...');
+      rebundle();
+      test();
+    });
+  }
+ 
+  rebundle();
+}
+ 
+function watch() {
+  return compile(true);
+};
 
-gulp.task('scripts', ['clean'], () => {
-  return gulp.src('src/**/*.js')
-        .pipe($.sourcemaps.init())
-        .pipe($.babel({modules: 'ignore'}))
-        .pipe($.concat('nucleus.js'))
-        .pipe($.sourcemaps.write('.'))
-        .pipe(gulp.dest('dist'));
-});
-
-gulp.task('test', function () {
-  qunit('./test/test-runner.html');
-});
-
-gulp.task( 'watch', () => {
-  gulp.watch( ['./src/**/*.js', './test/**/*_test.js'], ['scripts', 'test'] );
-});
-
-gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
-
-gulp.task('default', ['scripts']);
+function test() {
+	return qunit('test/test-runner.html');
+}
+ 
+gulp.task('build', function() { return compile(); });
+gulp.task('watch', function() { return watch(); });
+gulp.task('test', function() { return test(); });
+ 
+gulp.task('default', ['watch']);

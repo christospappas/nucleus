@@ -3,22 +3,13 @@
 <head>
   <meta charset="utf-8">
   <title>Nucleus Tests</title>
-  <link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css">
-  <script src="../bower_components/document-register-element/build/document-register-element.js"></script>
-  <script src="../bower_components/bind-polyfill/index.js"></script>
-  <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="../bower_components/lodash/lodash.js"></script>
-  <script src="../bower_components/qunit/qunit/qunit.js"></script>
-  <script src="../build/build.js"></script>
 </head>
 <body>
-  <div id="qunit"></div>
-  <div id="qunit-fixture">
-
     <script>
       window.onload = function() {
 
         Nucleus.Component('countdown-timer', {
+          
           timer: null,
 
           properties: {
@@ -64,8 +55,8 @@
             this.$button.html("Pause");
           },
 
-          remainingChanged: function() {
-            console.log("woo");
+          remainingChanged: function(oldVal, newVal) {
+            console.log("woo! changed to: " + newVal);
           }
         });
 
@@ -89,8 +80,9 @@
 
     <button is="x-button">blah</button>
 
-  </div>
-
-  <script src="nucleus_test.js"></script>
+  <script src="../bower_components/document-register-element/build/document-register-element.js"></script>
+  <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="../bower_components/lodash/lodash.js"></script>
+  <script src="../build/build.js"></script>
 </body>
 </html>

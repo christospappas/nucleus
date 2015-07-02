@@ -1,0 +1,1 @@
+export const BIND_EVENT_SPLITTER = /^(\S+)\s*(.*)$/;

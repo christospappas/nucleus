@@ -7,7 +7,7 @@ QUnit.module("Nucleus", {
 QUnit.test("registers component", function(assert) {
 	Nucleus.Component('custom-element', {});
 	var elem = document.createElement('custom-element');
-  assert.ok( Nucleus.isRegistered('custom-element'), "Registered" );
+  assert.ok( Nucleus.registry.isRegistered('custom-element'), "Registered" );
   assert.ok( elem.constructor !== HTMLElement, "Correct Constructor");
 });
 
