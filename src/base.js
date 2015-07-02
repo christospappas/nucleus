@@ -5,45 +5,45 @@ import extendElement from './extends';
 var Base = {
 
   registerCallback: function() {
-  	this._setExtends();
-  	this._invokeMethod('registered');
+    this._setExtends();
+    this._invokeMethod('registered');
   },
 
-	createdCallback: function() {
-		this.$el = $(this);
-		
-		this._bindEvents();
-		this._applyProperties();
+  createdCallback: function() {
+    this.$el = $(this);
+    
+    this._bindEvents();
+    this._applyProperties();
 
-		this._invokeMethod('created');
-	},
+    this._invokeMethod('created');
+  },
 
-	attachCallbacks: function() {
-		this._invokeMethod('attached');
-	},
+  attachCallbacks: function() {
+    this._invokeMethod('attached');
+  },
 
-	detachedCallback: function() {
-		this._unbindEvents();
-		this._invokeMethod('detached');
-	},
+  detachedCallback: function() {
+    this._unbindEvents();
+    this._invokeMethod('detached');
+  },
 
-	attributeChangedCallback: function(attrName, oldVal, newVal) {
-		var attrName = _.camelCase(attrName);
-		this._setAttributeToProperty(attrName);
-		this._invokeMethod(`${attrName}Changed`, [oldVal, newVal]);
-		this._invokeMethod('attributeChanged', arguments);
-	},
+  attributeChangedCallback: function(attrName, oldVal, newVal) {
+    var attrName = _.camelCase(attrName);
+    this._setAttributeToProperty(attrName);
+    this._invokeMethod(`${attrName}Changed`, [oldVal, newVal]);
+    this._invokeMethod('attributeChanged', arguments);
+  },
 
-	$: function(selector) {
-		return this.$el.find(selector);
-	},
+  $: function(selector) {
+    return this.$el.find(selector);
+  },
 
-	_invokeMethod: function(name, args) {
-		var fn = this[name];
+  _invokeMethod: function(name, args) {
+    var fn = this[name];
     if (fn) {
       fn.apply(this, Array.prototype.slice.call(args || [], 0));
     }
-	}
+  }
 
 };
 

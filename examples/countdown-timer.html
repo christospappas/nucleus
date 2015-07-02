@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Nucleus Tests</title>
+  <title>Nucleus Example</title>
 </head>
 <body>
     <script>
@@ -59,6 +59,7 @@
 
           remainingChanged: function(oldVal, newVal) {
             console.log("woo! changed to: " + newVal);
+            this.$countdown.html(this.remaining);
           },
 
           randomStuffChanged: function(oldVal, newVal) {
@@ -87,7 +88,7 @@
     <countdown-timer remaining="1000" interval="100" random-stuff='{"data": "goes here", "nested": {"works": "as well"}}'>
       <h1 class="countdown"></h1>
       <button class="toggle"></button>
-      <button is="x-button">G'day Mate!</button>
+      <button is="x-button">Yo!</button>
     </countdown-timer>
 
 
