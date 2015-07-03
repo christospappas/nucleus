@@ -10,18 +10,20 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('dist', ['clean'], function() {
-  return gulp.src(['src/index.js'])
+  return gulp.src(['src/nucleus.js'])
     .pipe(named())
     .pipe(webpack({
       module: {
         loaders: [
-          {test: /\.js$/, exclude: /node_modules/, loaders: ['babel'] },
+          {
+            test: /\.js$/, 
+            exclude: /node_modules|bower_components/,
+            loader: "babel-loader"
+          }
         ],
       },
     }))
-    .pipe(sourcemaps.init({ loadMaps: true }))
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('dist/'));
+    .pipe(gulp.dest('./'));
 });
 
 gulp.task('test', function() {
